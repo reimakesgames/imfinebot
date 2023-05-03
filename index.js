@@ -1,14 +1,18 @@
 const fs = require('node:fs');
 const path = require('node:path');
+
 const { Client, Events, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
 const { token } = require('./config.json');
+const emojis = require('./emojis.json');
+
+const buildInfo = require('./buildInfo.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
+console.warn(`[RUNTIME]: Loading commands...`);
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
-
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -23,46 +27,40 @@ for (const folder of commandFolders) {
 		}
 	}
 }
+console.warn(`[RUNTIME]: Loaded commands.`);
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
-	console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
+
 	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
+
 	try {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.followUp({ content: `${emojis.default} There was an error while executing this command!`, ephemeral: false });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: `${emojis.default} There was an error while executing this command!`, ephemeral: false });
 		}
 	}
 });
 
-client.once(Events.ClientReady, c => {
-	console.log(`Ready! Logged in as ${c.user.tag}`);
-	c.user.setPresence({
+client.once(Events.ClientReady, activeClient => {
+	console.warn(`[RUNTIME]: ${activeClient.user.tag} is now online.`);
+	activeClient.user.setPresence({
 		activities: [
 			{
-				name: "gurgy killer 2000",
+				name: "Gurgy Killer 2000",
 				type: ActivityType.Playing
 			}
 		],
-		status: 'dnd'
-	})
-
-	c.on(Events.MessageCreate, message => {
-		console.log(`${message.author.tag} in #${message.channel.name} said ${message.content}`);
-		if (message.author.bot) return;
-		if (message.content.toLowerCase().includes('fine')) {
-			message.react('1100034698069151754');
-		}
-	});
-	c.on(Events.MessageDelete, message => {
-		console.log(`Message deleted in #${message.channel.name}: ${message.content}`);
+		status: "online"
 	});
 });
+
+buildInfo.buildNumber += 1;
+fs.writeFileSync('./buildInfo.json', JSON.stringify(buildInfo, null, 4));
 
 client.login(token);
