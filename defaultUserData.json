@@ -1,0 +1,19 @@
+{
+	"user": {
+		"comment": "These data is used to store data that is visible to the user.",
+		"money": 1000,
+		"bank": 0,
+		"bankLimit": 500,
+
+		"xp": 0,
+		"xpScale": 0.5,
+		"xpLimit": 100,
+		"level": 1,
+
+		"inventory": []
+	},
+	"data": {
+		"comment": "This data property is used to store back-end data which isn't visible to the user.",
+		"lastSteal": 0
+	}
+}
