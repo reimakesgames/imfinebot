@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const { SlashCommandBuilder, PermissionsBitField, Events } = require("discord.js");
 
 const emojis = require("../../emojis.json");
 const media = require("../../media.json");
@@ -14,6 +14,8 @@ module.exports = {
 			// If the bot doesn't have permission to react to messages in the channel, it should throw an error.
 			// This is because the bot will only react to messages that are sent after the command is used.
 
+			console.warn(`[COMMAND]: ${interaction.user.tag} used the hell command.`);
+
 			const embed = new defaultEmbed(emojis.default + "ening")
 				.setDescription("The " + emojis.default + "ening has begun")
 				.setThumbnail(media.routine)
@@ -22,15 +24,17 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 
 			const channel = interaction.channel;
-			// since we cannot use an event based system, we have to use a while loop to check for new messages.
-			// this is not ideal, but it works.
-			setInterval(async () => {
-				const messages = await channel.messages.fetch({ limit: 8 });
-				// cycle through the messages and react to them
-				for (const message of messages.values()) {
+			async function messageHandler(message) {
+				if (message.channel.id === channel.id) {
+					if (message.content.startsWith("stop")) {
+						interaction.client.off(Events.MessageCreate, messageHandler);
+						console.warn(`[COMMAND]: ${interaction.user.tag} stopped the hell command.`);
+						return;
+					};
 					await message.react(emojis.default);
 				}
-			}, 10000);
+			}
+			interaction.client.on(Events.MessageCreate, messageHandler);
 		} else {
 			const embed = new defaultEmbed("Failure")
 				.setDescription("Only people worthy of the " + emojis.default + "ening can use this command")
