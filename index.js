@@ -7,7 +7,7 @@ const emojis = require('./emojis.json');
 
 const buildInfo = require('./buildInfo.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 client.commands = new Collection();
 
 console.warn(`[RUNTIME]: Loading commands...`);
