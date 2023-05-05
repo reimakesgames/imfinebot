@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="./images/favicon.png">
+	<link rel="stylesheet" href="./style.css">
+
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="imfinebot">
+	<meta property="og:description" content="homepage of the imfinebot">
+	<meta property="og:url" content="https://reimakesgames.github.io/imfinebot">
+	<meta property="og:image" content="https://cdn.discordapp.com/attachments/1102402095728046100/1104004994501447690/embed.png">
+	<meta name="theme-color" content="#CBDBFF">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+	<title>Home</title>
+
+	<script src="https://unpkg.com/scrollreveal"></script>
+    <script>
+        ScrollReveal({ reset: true });
+    </script>
+</head>
+<body>
+	<div class="textcontainer">
+		<div class="veryhugetext">
+			imfinebot
+		</div>
+		<div class="hugeasstext">
+			the best discord bot
+		</div>
+		<div class="slightlysmallertext">
+			to ever exist
+		</div>
+	</div>
+	<div class="internationalcontainer">
+		<div class="hugeasstext">
+			serving literally no purpose other than
+		</div>
+		<div class="slightlysmallertext">
+			being a fucking annoyance
+		</div>
+	</div>
+	<div class="poyo" id="poyo"></div>
+	<div class="container">
+		<div class="slightlysmallertext2">
+			poyo
+		</div>
+	</div>
+	<div class="poyo2" id="poyo2"></div>
+	<div class="container">
+		<div class="slightlysmallertext2">
+			add me or else
+		</div>
+	</div>
+	<script>
+		ScrollReveal().reveal('.textcontainer', { delay: 100, duration: 1000, origin: 'top', distance: '100px' });
+		ScrollReveal().reveal('.veryhugetext', { delay: 300, duration: 1000, origin: 'top', distance: '50px' });
+		ScrollReveal().reveal('.hugeasstext', { delay: 1000, duration: 500, origin: 'bottom', distance: '50px' });
+		ScrollReveal().reveal('.slightlysmallertext', { delay: 1100, duration: 500, origin: 'bottom', distance: '50px' });
+		ScrollReveal().reveal('.internationalcontainer', { delay: 100, duration: 1000, origin: 'bottom', distance: '100px' });
+
+		var audio = new Audio('./images/poyo.mp3');
+		document.getElementById("poyo").addEventListener("click", function() {
+			audio.currentTime = 0.41;
+			audio.play();
+		});
+		document.getElementById("poyo2").addEventListener("click", function() {
+			window.open("https://discord.com/api/oauth2/authorize?client_id=1102381669224284290&permissions=414464724032&scope=bot", "_blank");
+		});
+	</script>
+</body>
+</html>
