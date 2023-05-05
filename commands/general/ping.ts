@@ -1,6 +1,6 @@
-const { SlashCommandBuilder } = require("discord.js");
+import { SlashCommandBuilder } from "discord.js";
 
-const emojis = require("../../emojis.json");
+import emojis from "../../emojis.json";
 
 module.exports = {
 	data: new SlashCommandBuilder()

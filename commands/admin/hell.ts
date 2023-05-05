@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, PermissionsBitField, Events } = require("discord.js");
+import { SlashCommandBuilder, PermissionsBitField, Events, Message } from "discord.js";
 
-const emojis = require("../../emojis.json");
-const media = require("../../media.json");
-const defaultEmbed = require("../../src/modules/defaultEmbed.js");
+import emojis from "../../emojis.json";
+import media from "../../media.json";
+import { defaultEmbed } from "../../src/modules/defaultEmbed.js";
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,15 +16,15 @@ module.exports = {
 
 			console.warn(`[COMMAND]: ${interaction.user.tag} used the hell command.`);
 
-			const embed = new defaultEmbed(emojis.default + "ening")
-				.setDescription("The " + emojis.default + "ening has begun")
+			const embed = new defaultEmbed(`The ${emojis.default}ening`)
+				.setDescription(`The ${emojis.default}ening has begun.`)
 				.setThumbnail(media.routine)
 				.setImage(media.routine);
 
 			await interaction.reply({ embeds: [embed] });
 
 			const channel = interaction.channel;
-			async function messageHandler(message) {
+			async function messageHandler(message: Message) {
 				if (message.channel.id === channel.id) {
 					if (message.content.startsWith("stop")) {
 						interaction.client.off(Events.MessageCreate, messageHandler);
@@ -37,7 +37,7 @@ module.exports = {
 			interaction.client.on(Events.MessageCreate, messageHandler);
 		} else {
 			const embed = new defaultEmbed("Failure")
-				.setDescription("Only people worthy of the " + emojis.default + "ening can use this command")
+				.setDescription(`Only people worthy of the ${emojis.default}ening can use this command`)
 				.setThumbnail(media.routine)
 				.setImage(media.routine);
 			await interaction.reply({ embeds: [embed] });

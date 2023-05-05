@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
-
 import { Client, Events, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
-import { token } from './config.json';
-import emojis from './emojis.json';
+import dotenv from 'dotenv';
+dotenv.config();
 
+import emojis from './emojis.json';
 import buildInfo from './buildInfo.json';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
@@ -15,11 +15,13 @@ const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
+	console.log(`[RUNTIME]: Loading commands from ${commandsPath}`)
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
+		console.log(`[RUNTIME]: Loading command ${filePath}`);
 		if (command.data && command.execute) {
 			commands.set(command.data.name, command);
 		} else {
@@ -63,4 +65,4 @@ client.once(Events.ClientReady, activeClient => {
 buildInfo.buildNumber += 1;
 fs.writeFileSync('./buildInfo.json', JSON.stringify(buildInfo, null, 4));
 
-client.login(token);
+client.login(process.env.TOKEN!);

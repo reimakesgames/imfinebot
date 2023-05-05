@@ -1,8 +1,8 @@
-const { SlashCommandBuilder } = require("discord.js");
+import { CommandInteraction, Interaction, InteractionResponse, SlashCommandBuilder } from "discord.js";
 
-const defaultEmbed = require("../../src/modules/defaultEmbed.js");
-const emojis = require("../../emojis.json");
-const media = require("../../media.json");
+import { defaultEmbed } from "../../src/modules/defaultEmbed.js";
+import emojis from "../../emojis.json";
+import media from "../../media.json";
 
 const helpText = `Welcome to the help menu! Here you can find a list of commands and their descriptions.
 This bot was created by reimakesgames#3672 as a joke, because ${emojis.default}
@@ -20,7 +20,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("help")
 		.setDescription("Shows a list of commands"),
-	async execute(interaction) {
+	async execute(interaction: CommandInteraction) {
 		const embed = new defaultEmbed("Help")
 			.setDescription(helpText)
 			.setThumbnail(media.routine);

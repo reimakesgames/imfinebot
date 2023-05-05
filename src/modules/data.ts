@@ -1,9 +1,10 @@
-const fs = require("node:fs");
-const data = require("./data.json");
-const defaultUserData = require("./defaultUserData.json");
+import fs from "node:fs";
+import data from "../../data.json";
+import defaultUserData from "../../defaultUserData.json";
+
 const prodFlag = false; // Set to true if you want a minimized data.json file (no whitespace)
 
-function stringify(data) {
+function stringify(data: Object) {
 	if (prodFlag) {
 		return JSON.stringify(data);
 	} else {
@@ -13,21 +14,21 @@ function stringify(data) {
 
 
 
-function initializeUser(id) {
+function initializeUser(id: number) {
 	if (!data[id]) {
 		data[id] = defaultUserData;
 	}
 }
 
 // GDPR compliance despite being a private bot :)
-function purgeUser(id) {
+function purgeUser(id: number) {
 	delete data[id];
 }
 
 // This function adds new keys to the user's data if they don't exist
 // This is useful for adding new features to the bot without breaking old data
 // This also prevents the need to manually set values for new keys in random places
-function addNewKeys(id, keys) {
+function addNewKeys(id: number, keys: string[]) {
 	initializeUser(id); // Make sure the user exists
 	for (const key of keys) {
 		if (!data[id][key]) {
@@ -37,9 +38,7 @@ function addNewKeys(id, keys) {
 }
 
 function saveAll() {
-	fs.writeFileSync("./data.json", stringify(), (err) => {
-		if (err) console.log(err);
-	});
+	fs.writeFileSync("./data.json", stringify(data));
 }
 
 // As opposed to saving the file every time a change is made, this function

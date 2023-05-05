@@ -1,12 +1,14 @@
-const colors =  require("../../colors.json");
-const buildInfo = require("../../buildInfo.json");
+import { EmbedBuilder } from "discord.js";
 
-const { EmbedBuilder } = require("discord.js");
+import colors from "../../colors.json";
+import buildInfo from "../../buildInfo.json";
 
-class defaultEmbed extends EmbedBuilder {
-	constructor(topic) {
+export type DefaultEmbed = EmbedBuilder;
+
+export class defaultEmbed extends EmbedBuilder {
+	constructor(topic: string) {
 		super();
-		this.setColor(colors.lighterBlue);
+		this.setColor(colors.lighterBlue as `#${string}`);
 		this.setTitle(`${topic}`);
 		this.setDescription(`This is an empty embed, which contains text that explains that this embed is empty. Congratulations!`);
 		this.setFooter({
@@ -15,5 +17,3 @@ class defaultEmbed extends EmbedBuilder {
 		this.setTimestamp();
 	}
 }
-
-module.exports = defaultEmbed;
