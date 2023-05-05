@@ -4,8 +4,8 @@ import { Client, Events, GatewayIntentBits, Collection, ActivityType } from 'dis
 import dotenv from 'dotenv';
 dotenv.config();
 
-import emojis from './emojis.json';
-import buildInfo from './buildInfo.json';
+import emojis from './data/emojis.json';
+import buildInfo from './data/buildInfo.json';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 var commands: Collection<string, any> = new Collection();

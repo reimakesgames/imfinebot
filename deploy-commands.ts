@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const commands: Array<RESTPostAPIChatInputApplicationCommandsJSONBody> = [];
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join(__dirname, 'src', 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);

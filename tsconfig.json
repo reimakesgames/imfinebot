@@ -1,0 +1,22 @@
+{
+	"buildOptions": {
+		"outDir": "./dist",
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist"],
+	"ts-node": {
+		"transpileOnly": true,
+		"compilerOptions": {
+			"module": "commonjs"
+		}
+	},
+	"compilerOptions": {
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"resolveJsonModule": true
+	}
+}

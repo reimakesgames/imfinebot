@@ -1,8 +1,19 @@
-import { SlashCommandBuilder, PermissionsBitField, Events, Message } from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField, Events, Message, Channel, CommandInteraction, Interaction, ChatInputCommandInteraction } from "discord.js";
 
-import emojis from "../../emojis.json";
-import media from "../../media.json";
-import { defaultEmbed } from "../../src/modules/defaultEmbed.js";
+import emojis from "../../data/emojis.json";
+import media from "../../data/media.json";
+import { DefaultEmbed } from "../../modules/defaultEmbed";
+
+async function messageHandler(message: Message, channel: Channel, interaction: ChatInputCommandInteraction | any) {
+	if (message.channel.id === channel.id) {
+		if (message.content.startsWith("stop")) {
+			interaction.client.off(Events.MessageCreate, messageHandler);
+			console.warn(`[COMMAND]: ${interaction.user.tag} stopped the hell command.`);
+			return;
+		};
+		await message.react(emojis.default);
+	}
+}
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,30 +27,23 @@ module.exports = {
 
 			console.warn(`[COMMAND]: ${interaction.user.tag} used the hell command.`);
 
-			const embed = new defaultEmbed(`The ${emojis.default}ening`)
+			const embed = new DefaultEmbed(`The ${emojis.default}ening`)
 				.setDescription(`The ${emojis.default}ening has begun.`)
 				.setThumbnail(media.routine)
-				.setImage(media.routine);
+				.setImage(media.routine)
+				.build();
 
 			await interaction.reply({ embeds: [embed] });
 
 			const channel = interaction.channel;
-			async function messageHandler(message: Message) {
-				if (message.channel.id === channel.id) {
-					if (message.content.startsWith("stop")) {
-						interaction.client.off(Events.MessageCreate, messageHandler);
-						console.warn(`[COMMAND]: ${interaction.user.tag} stopped the hell command.`);
-						return;
-					};
-					await message.react(emojis.default);
-				}
-			}
+			messageHandler(interaction.message, channel, interaction);
 			interaction.client.on(Events.MessageCreate, messageHandler);
 		} else {
-			const embed = new defaultEmbed("Failure")
+			const embed = new DefaultEmbed("Failure")
 				.setDescription(`Only people worthy of the ${emojis.default}ening can use this command`)
 				.setThumbnail(media.routine)
-				.setImage(media.routine);
+				.setImage(media.routine)
+				.build();
 			await interaction.reply({ embeds: [embed] });
 		}
 	}
