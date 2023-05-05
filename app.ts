@@ -1,14 +1,14 @@
-const fs = require('node:fs');
-const path = require('node:path');
+import fs from 'node:fs';
+import path from 'node:path';
 
-const { Client, Events, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
-const { token } = require('./config.json');
-const emojis = require('./emojis.json');
+import { Client, Events, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
+import { token } from './config.json';
+import emojis from './emojis.json';
 
-const buildInfo = require('./buildInfo.json');
+import buildInfo from './buildInfo.json';
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-client.commands = new Collection();
+var commands: Collection<string, any> = new Collection();
 
 console.warn(`[RUNTIME]: Loading commands...`);
 const foldersPath = path.join(__dirname, 'commands');
@@ -21,7 +21,7 @@ for (const folder of commandFolders) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
 		if (command.data && command.execute) {
-			client.commands.set(command.data.name, command);
+			commands.set(command.data.name, command);
 		} else {
 			console.log(`Invalid command file: ${filePath}`);
 		}
@@ -32,7 +32,7 @@ console.warn(`[RUNTIME]: Loaded commands.`);
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
 
-	const command = client.commands.get(interaction.commandName);
+	const command = commands.get(interaction.commandName);
 	if (!command) return;
 
 	try {

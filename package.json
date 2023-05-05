@@ -2,5 +2,8 @@
   "dependencies": {
     "discord.js": "^14.9.0"
   },
-  "main": "index.js"
+  "main": "app.ts",
+  "devDependencies": {
+    "typescript": "^5.0.4"
+  }
 }
