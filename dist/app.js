@@ -26,7 +26,7 @@ const foldersPath = node_path_1.default.join(__dirname, 'commands');
 const commandFolders = node_fs_1.default.readdirSync(foldersPath);
 for (const folder of commandFolders) {
     const commandsPath = node_path_1.default.join(foldersPath, folder);
-    const commandFiles = node_fs_1.default.readdirSync(commandsPath).filter(file => file.endsWith('.ts'));
+    const commandFiles = node_fs_1.default.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
     console.log(`[RUNTIME]: Loading commands from ${commandsPath}`);
     for (const file of commandFiles) {
         const filePath = node_path_1.default.join(commandsPath, file);
