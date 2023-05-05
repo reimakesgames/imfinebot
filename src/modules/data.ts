@@ -1,6 +1,6 @@
 import fs from "node:fs";
-import data from "../../data.json";
-import defaultUserData from "../../defaultUserData.json";
+import data from "../data/data.json";
+import defaultUserData from "../data/defaultUserData.json";
 
 const prodFlag = false; // Set to true if you want a minimized data.json file (no whitespace)
 

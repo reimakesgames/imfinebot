@@ -15,8 +15,11 @@
 		}
 	},
 	"compilerOptions": {
+		"target": "ES6",
 		"module": "commonjs",
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"outDir": "./dist",
+		"rootDir": "./src",
 	}
 }
