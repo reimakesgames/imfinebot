@@ -63,6 +63,6 @@ client.once(Events.ClientReady, activeClient => {
 });
 
 buildInfo.buildNumber += 1;
-fs.writeFileSync('./buildInfo.json', JSON.stringify(buildInfo, null, 4));
+fs.writeFileSync('src/data/buildInfo.json', JSON.stringify(buildInfo, null, 4));
 
 client.login(process.env.TOKEN!);
