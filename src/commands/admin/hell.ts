@@ -4,7 +4,7 @@ import emojis from "../../data/emojis.json";
 import media from "../../data/media.json";
 import { DefaultEmbed } from "../../modules/defaultEmbed";
 
-async function messageHandler(message: Message, channel: Channel, interaction: ChatInputCommandInteraction | any) {
+async function messageHandler(channel: Channel, interaction: ChatInputCommandInteraction | any, message: Message) {
 	if (message.channel.id === channel.id) {
 		if (message.content.startsWith("stop")) {
 			interaction.client.off(Events.MessageCreate, messageHandler);
@@ -36,8 +36,9 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 
 			const channel = interaction.channel;
-			messageHandler(interaction.message, channel, interaction);
-			interaction.client.on(Events.MessageCreate, messageHandler);
+			interaction.client.on(Events.MessageCreate, (message: Message) => {
+				messageHandler(channel, interaction, message)
+			});
 		} else {
 			const embed = new DefaultEmbed("Failure")
 				.setDescription(`Only people worthy of the ${emojis.default}ening can use this command`)

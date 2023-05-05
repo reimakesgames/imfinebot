@@ -16,7 +16,7 @@ const discord_js_1 = require("discord.js");
 const emojis_json_1 = __importDefault(require("../../data/emojis.json"));
 const media_json_1 = __importDefault(require("../../data/media.json"));
 const defaultEmbed_1 = require("../../modules/defaultEmbed");
-function messageHandler(message, channel, interaction) {
+function messageHandler(channel, interaction, message) {
     return __awaiter(this, void 0, void 0, function* () {
         if (message.channel.id === channel.id) {
             if (message.content.startsWith("stop")) {
@@ -47,8 +47,9 @@ module.exports = {
                     .build();
                 yield interaction.reply({ embeds: [embed] });
                 const channel = interaction.channel;
-                messageHandler(interaction.message, channel, interaction);
-                interaction.client.on(discord_js_1.Events.MessageCreate, messageHandler);
+                interaction.client.on(discord_js_1.Events.MessageCreate, (message) => {
+                    messageHandler(channel, interaction, message);
+                });
             }
             else {
                 const embed = new defaultEmbed_1.DefaultEmbed("Failure")
