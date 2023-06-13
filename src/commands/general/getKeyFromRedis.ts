@@ -10,10 +10,10 @@ module.exports = {
 			.setDescription("The key to get")
 			.setRequired(true)
 		),
-	async execute(interaction) {
+	async execute(interaction, myRedis) {
 		if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			const key = interaction.options.getString("key", true);
-			const value = await interaction.client.redisClient.get(key);
+			const value = await myRedis.get(key);
 			await interaction.reply({ content: value });
 		} else {
 			await interaction.reply({ content: `${emojis.default}` });
