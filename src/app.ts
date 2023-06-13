@@ -1,9 +1,10 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { Client, Events, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
-import dotenv from 'dotenv';
 import myRedis from './modules/redis'
-dotenv.config();
 
 import emojis from './data/emojis.json';
 import buildInfo from './data/buildInfo.json';
