@@ -54,7 +54,8 @@ client.once(Events.ClientReady, activeClient => {
 	activeClient.user.setPresence({
 		activities: [
 			{
-				name: "Gurgy Killer 2000",
+				// name: "Gurgy Killer 2000",
+				name: "WE ARE SO BACK",
 				type: ActivityType.Playing
 			}
 		],
