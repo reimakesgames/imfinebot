@@ -18,11 +18,11 @@ function disconnect() {
 }
 
 async function get(key: RedisCommandArgument) {
-	await redis.get(key);
+	return await redis.get(key);
 }
 
 async function set(key: RedisCommandArgument, value: RedisCommandArgument) {
-	await redis.set(key, value);
+	return await redis.set(key, value);
 }
 
 export default { disconnect, get, set }
