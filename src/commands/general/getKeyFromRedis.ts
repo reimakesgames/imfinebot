@@ -3,7 +3,7 @@ import emojis from "../../data/emojis.json";
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("horror")
+		.setName("grabkey")
 		.setDescription("Gets a key from redis")
 		.addStringOption(new SlashCommandStringOption()
 			.setName("key")
@@ -12,7 +12,7 @@ module.exports = {
 		),
 	async execute(interaction, myRedis) {
 		if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			const key = interaction.options.getString("key", true);
+			const key = interaction.options.getString("key");
 			const value = await myRedis.get(key);
 			await interaction.reply({ content: value });
 		} else {
