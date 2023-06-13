@@ -13,7 +13,7 @@ module.exports = {
 	async execute(interaction) {
 		if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
 			const key = interaction.options.getString("key", true);
-			const value = await interaction.redisClient.get(key);
+			const value = await interaction.client.redisClient.get(key);
 			await interaction.reply({ content: value });
 		} else {
 			await interaction.reply({ content: `${emojis.default}` });
