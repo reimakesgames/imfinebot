@@ -10,6 +10,8 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "start": "tsc && tsx ."
+    "build": "tsc",
+    "start": "tsx .",
+    "dev": "tsc && tsx ."
   }
 }
