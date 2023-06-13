@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Client, Events, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
 import dotenv from 'dotenv';
+import myRedis from './modules/redis'
 dotenv.config();
 
 import emojis from './data/emojis.json';
@@ -67,3 +68,10 @@ buildInfo.buildNumber += 1;
 fs.writeFileSync('src/data/buildInfo.json', JSON.stringify(buildInfo, null, 4));
 
 client.login(process.env.TOKEN!);
+
+function cleanup() {
+	myRedis.disconnect();
+	console.log("Disconnected from Redis.")
+}
+
+process.on('exit', cleanup.bind(null, { cleanup: true }));
