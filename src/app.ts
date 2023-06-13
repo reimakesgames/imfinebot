@@ -53,16 +53,15 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.once(Events.ClientReady, activeClient => {
 	console.warn(`[RUNTIME]: ${activeClient.user.tag} is now online.`);
-	activeClient.user.setPresence({
-		activities: [
-			{
-				// name: "Gurgy Killer 2000",
-				name: "WE ARE SO BACK",
-				type: ActivityType.Playing
-			}
-		],
-		status: "online"
-	});
+	// activeClient.user.setPresence({
+	// 	activities: [
+	// 		{
+	// 			name: "Gurgy Killer 2000",
+	// 			type: ActivityType.Playing
+	// 		}
+	// 	],
+	// 	status: "online"
+	// });
 });
 
 buildInfo.buildNumber += 1;
