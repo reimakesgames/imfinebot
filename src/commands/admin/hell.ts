@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionsBitField, Events, Message, Channel, CommandInteraction, Interaction, ChatInputCommandInteraction } from "discord.js";
+import { SlashCommandBuilder, PermissionsBitField, Events, Message, Channel, CommandInteraction, ChatInputCommandInteraction } from "discord.js";
 
 import emojis from "../../data/emojis.json";
 import media from "../../data/media.json";
@@ -9,6 +9,7 @@ async function messageHandler(channel: Channel, interaction: ChatInputCommandInt
 		if (message.content.startsWith("stop")) {
 			interaction.client.off(Events.MessageCreate, myself);
 			console.warn(`[COMMAND]: ${interaction.user.tag} stopped the hell command.`);
+			await message.reply(`The ${emojis.default}ening has ended. For now.`);
 			return;
 		};
 		await message.react(emojis.default);
@@ -19,34 +20,36 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("hell")
 		.setDescription("megabyte's worst nightmare"),
-	async execute(interaction) {
-		if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			// Since only admins can use this command, we can assume that the bot has permission to react to messages in the channel.
-			// If the bot doesn't have permission to react to messages in the channel, it should throw an error.
-			// This is because the bot will only react to messages that are sent after the command is used.
+	async execute(interaction: CommandInteraction) {
+		const userPermissions = interaction.member.permissions as Readonly<PermissionsBitField>;
+		const channel = interaction.channel;
 
+		if (userPermissions.has(PermissionsBitField.Flags.Administrator)) {
 			console.warn(`[COMMAND]: ${interaction.user.tag} used the hell command in server ${interaction.guildId}, channel ${interaction.channelId}.`);
+			console.warn(`https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${interaction.id}`)
 
-			const embed = new DefaultEmbed(`The ${emojis.default}ening`)
-				.setDescription(`The ${emojis.default}ening has begun.`)
-				.setThumbnail(media.routine)
-				.setImage(media.routine)
-				.build();
+			await interaction.reply({ embeds: [
+				new DefaultEmbed(`The ${emojis.default}ening`)
+					.setDescription(`The ${emojis.default}ening has begun.`)
+					.setThumbnail(media.routine)
+					.setImage(media.routine)
+					.build()
+				]
+			});
 
-			await interaction.reply({ embeds: [embed] });
-
-			const channel = interaction.channel;
 			var myself = (message: Message) => {
 				messageHandler(channel, interaction, message, myself);
 			}
 			interaction.client.on(Events.MessageCreate, myself);
 		} else {
-			const embed = new DefaultEmbed("Failure")
-				.setDescription(`Only people worthy of the ${emojis.default}ening can use this command`)
-				.setThumbnail(media.routine)
-				.setImage(media.routine)
-				.build();
-			await interaction.reply({ embeds: [embed] });
+			await interaction.reply({ embeds: [
+				new DefaultEmbed("Failure")
+					.setDescription(`Only people worthy of the ${emojis.default}ening can use this command`)
+					.setThumbnail(media.routine)
+					.setImage(media.routine)
+					.build()
+				]
+			});
 		}
 	}
 };

@@ -1,4 +1,4 @@
-import { CommandInteraction, PermissionsBitField, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import { CommandInteraction, CommandInteractionOptionResolver, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 import emojis from "../../data/emojis.json";
 import redis from "../../modules/redis";
 import permission from "../../modules/permission";
@@ -17,11 +17,13 @@ module.exports = {
 			.setDescription("The field to get")
 			.setRequired(false)
 		),
-	async execute(interaction) {
+	async execute(interaction: CommandInteraction) {
 		if (permission.userIsLvlSix(interaction.user.id)) {
-			const key = interaction.options.getString("key");
-			const field = interaction.options.getString("field");
+			const interactionOptions = interaction.options as CommandInteractionOptionResolver;
+			const key = interactionOptions.getString("key");
+			const field = interactionOptions.getString("field");
 			var value = null;
+
 			if (field) {
 				value = await redis.hGet(key, field);
 			} else {

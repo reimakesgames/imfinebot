@@ -1,4 +1,4 @@
-import { ActivityType, PermissionsBitField, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import { ActivityType, CommandInteraction, CommandInteractionOptionResolver, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 
 import permission from "../../modules/permission";
 import redis from "../../modules/redis";
@@ -13,13 +13,16 @@ module.exports = {
 			.setRequired(true)
 		),
 
-	async execute(interaction) {
+	async execute(interaction: CommandInteraction) {
 		if (permission.userIsLvlSix(interaction.user.id)) {
-			var presence = interaction.options.getString("presence");
+			const interactionOptions = interaction.options as CommandInteractionOptionResolver;
+			var presence = interactionOptions.getString("presence");
+
 			if (presence === null) {
 				presence = await redis.get("presence");
 			}
-			await interaction.client.user.setPresence({
+
+			interaction.client.user.setPresence({
 				activities: [
 					{
 						name: presence,
