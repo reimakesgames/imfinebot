@@ -9,57 +9,57 @@ const redis = createClient({
 redis.on('error', error => console.warn(error));
 console.log(`[RUNTIME]: Redis activated and ready for use.`);
 
-function get(key: string) {
-	redis.connect();
-	const value = redis.get(key);
-	redis.disconnect();
+async function get(key: string) {
+	await redis.connect();
+	const value = await redis.get(key);
+	await redis.disconnect();
 	return value
 }
 
-function set(key: string, value: string) {
-	redis.connect();
-	const result = redis.set(key, value);
-	redis.disconnect();
+async function set(key: string, value: string) {
+	await redis.connect();
+	const result = await redis.set(key, value);
+	await redis.disconnect();
 	return result
 }
 
-function del(key: string) {
-	redis.connect();
-	const result = redis.del(key);
-	redis.disconnect();
+async function del(key: string) {
+	await redis.connect();
+	const result = await redis.del(key);
+	await redis.disconnect();
 	return result
 }
 
-function hGet(key: string, field: string) {
-	redis.connect();
-	const value = redis.hGet(key, field);
-	redis.disconnect();
+async function hGet(key: string, field: string) {
+	await redis.connect();
+	const value = await redis.hGet(key, field);
+	await redis.disconnect();
 	return value
 }
 
-function hGetAll(key: string) {
-	redis.connect();
-	const value = redis.hGetAll(key);
-	redis.disconnect();
+async function hGetAll(key: string) {
+	await redis.connect();
+	const value = await redis.hGetAll(key);
+	await redis.disconnect();
 	return value
 }
 
-function hSet(key: string, field: string, value: string) {
-	redis.connect();
-	const result = redis.hSet(key, field, value);
-	redis.disconnect();
+async function hSet(key: string, field: string, value: string) {
+	await redis.connect();
+	const result = await redis.hSet(key, field, value);
+	await redis.disconnect();
 	return result
 }
 
-function hDel(key: string, field: string) {
-	redis.connect();
-	const result = redis.hDel(key, field);
-	redis.disconnect();
+async function hDel(key: string, field: string) {
+	await redis.connect();
+	const result = await redis.hDel(key, field);
+	await redis.disconnect();
 	return result
 }
 
-function disconnect() {
-	redis.disconnect();
+async function disconnect() {
+	await redis.disconnect();
 	console.log("Disconnected from Redis.")
 }
 
