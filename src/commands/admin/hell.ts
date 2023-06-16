@@ -4,10 +4,10 @@ import emojis from "../../data/emojis.json";
 import media from "../../data/media.json";
 import { DefaultEmbed } from "../../modules/defaultEmbed";
 
-async function messageHandler(channel: Channel, interaction: ChatInputCommandInteraction | any, message: Message) {
+async function messageHandler(channel: Channel, interaction: ChatInputCommandInteraction | any, message: Message, myself: any) {
 	if (message.channel.id === channel.id) {
 		if (message.content.startsWith("stop")) {
-			interaction.client.off(Events.MessageCreate, messageHandler);
+			interaction.client.off(Events.MessageCreate, myself);
 			console.warn(`[COMMAND]: ${interaction.user.tag} stopped the hell command.`);
 			return;
 		};
@@ -25,7 +25,7 @@ module.exports = {
 			// If the bot doesn't have permission to react to messages in the channel, it should throw an error.
 			// This is because the bot will only react to messages that are sent after the command is used.
 
-			console.warn(`[COMMAND]: ${interaction.user.tag} used the hell command.`);
+			console.warn(`[COMMAND]: ${interaction.user.tag} used the hell command in server ${interaction.guildId}, channel ${interaction.channelId}.`);
 
 			const embed = new DefaultEmbed(`The ${emojis.default}ening`)
 				.setDescription(`The ${emojis.default}ening has begun.`)
@@ -36,9 +36,10 @@ module.exports = {
 			await interaction.reply({ embeds: [embed] });
 
 			const channel = interaction.channel;
-			interaction.client.on(Events.MessageCreate, (message: Message) => {
-				messageHandler(channel, interaction, message)
-			});
+			var myself = (message: Message) => {
+				messageHandler(channel, interaction, message, myself);
+			}
+			interaction.client.on(Events.MessageCreate, myself);
 		} else {
 			const embed = new DefaultEmbed("Failure")
 				.setDescription(`Only people worthy of the ${emojis.default}ening can use this command`)
