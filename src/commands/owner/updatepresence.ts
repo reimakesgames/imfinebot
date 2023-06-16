@@ -1,5 +1,7 @@
 import { ActivityType, PermissionsBitField, SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
 
+import permission from "../../modules/permission";
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("updatepresence")
@@ -11,7 +13,7 @@ module.exports = {
 		),
 
 	async execute(interaction, myRedis) {
-		if (interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+		if (permission.userIsLvlSix(interaction.user.id)) {
 			var presence = interaction.options.getString("presence");
 			if (presence === null) {
 				presence = await myRedis.get("presence");

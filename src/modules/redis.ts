@@ -1,28 +1,66 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import { createClient } from 'redis';
-import { RedisCommandArgument } from '@redis/client/dist/lib/commands';
 
 const redis = createClient({
 	url: process.env.REDIS_URL!
 });
 
 redis.on('error', error => console.error(error));
-redis.on('ready', () => console.warn(`[RUNTIME]: Redis is now online.`));
-console.log(`[RUNTIME]: Connecting to Redis...`);
-redis.connect();
-// wait for redis to connect
+console.log(`[RUNTIME]: Redis activated and ready for use.`);
+
+function get(key: string) {
+	redis.connect();
+	const value = redis.get(key);
+	redis.disconnect();
+	return value
+}
+
+function set(key: string, value: string) {
+	redis.connect();
+	const result = redis.set(key, value);
+	redis.disconnect();
+	return result
+}
+
+function del(key: string) {
+	redis.connect();
+	const result = redis.del(key);
+	redis.disconnect();
+	return result
+}
+
+function hGet(key: string, field: string) {
+	redis.connect();
+	const value = redis.hGet(key, field);
+	redis.disconnect();
+	return value
+}
+
+function hGetAll(key: string) {
+	redis.connect();
+	const value = redis.hGetAll(key);
+	redis.disconnect();
+	return value
+}
+
+function hSet(key: string, field: string, value: string) {
+	redis.connect();
+	const result = redis.hSet(key, field, value);
+	redis.disconnect();
+	return result
+}
+
+function hDel(key: string, field: string) {
+	redis.connect();
+	const result = redis.hDel(key, field);
+	redis.disconnect();
+	return result
+}
 
 function disconnect() {
 	redis.disconnect();
+	console.log("Disconnected from Redis.")
 }
 
-async function get(key: RedisCommandArgument) {
-	return await redis.get(key);
-}
-
-async function set(key: RedisCommandArgument, value: RedisCommandArgument) {
-	return await redis.set(key, value);
-}
-
-export default { disconnect, get, set }
+export default { redis, get, set, del, hGet, hGetAll, hSet, hDel, disconnect };

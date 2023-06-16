@@ -4,7 +4,7 @@ dotenv.config();
 import fs from 'node:fs';
 import path from 'node:path';
 import { Client, Events, GatewayIntentBits, Collection, ActivityType } from 'discord.js';
-import myRedis from './modules/redis'
+import redis from './modules/redis'
 
 import emojis from './data/emojis.json';
 import buildInfo from './data/buildInfo.json';
@@ -40,7 +40,7 @@ client.on(Events.InteractionCreate, async interaction => {
 	if (!command) return;
 
 	try {
-		await command.execute(interaction, myRedis);
+		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
 		if (interaction.replied || interaction.deferred) {
@@ -70,8 +70,7 @@ fs.writeFileSync('src/data/buildInfo.json', JSON.stringify(buildInfo, null, 4));
 client.login(process.env.TOKEN!);
 
 function cleanup() {
-	myRedis.disconnect();
-	console.log("Disconnected from Redis.")
+	redis.disconnect();
 }
 
 process.on('exit', cleanup.bind(null, { cleanup: true }));
