@@ -6,7 +6,7 @@ const redis = createClient({
 	url: process.env.REDIS_URL!
 });
 
-redis.on('error', error => console.error(error));
+redis.on('error', error => console.warn(error));
 console.log(`[RUNTIME]: Redis activated and ready for use.`);
 
 function get(key: string) {
