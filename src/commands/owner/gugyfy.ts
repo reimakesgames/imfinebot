@@ -1,7 +1,6 @@
 // update everyone's nicknames to gugy
 
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import permission from "../../modules/permission";
 
 
 module.exports = {
@@ -9,15 +8,12 @@ module.exports = {
 		.setName("gugyfy")
 		.setDescription("Updates everyone's nickname to gugy"),
 	async execute(interaction: CommandInteraction) {
-		if (permission.userIsLvlSix(interaction.user.id)) {
-			interaction.guild.members.fetch()
-				.then(members => {
-					members.forEach(member => {
-						member.setNickname("gugy");
-					});
-				})
-				.catch(console.error);
-			await interaction.reply({ content: "Everyone's nickname has been updated to gugy!" });
-		}
+		const members = await interaction.guild.members.fetch();
+		members.forEach(async member => {
+			// protect for potential errors if the bot doesn't have the permissions to change the nickname
+			if (!member.manageable) return;
+			await member.setNickname("gugy");
+		});
+		await interaction.reply({ content: "Everyone's nickname has been updated to gugy!" });
 	}
 }
